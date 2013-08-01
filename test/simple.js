@@ -15,24 +15,20 @@ function assertSame (fn) {
   })
 }
 
-assertSame(function sha1 (crypto, cb) {
-  cb(null, crypto.createHash('sha1').update('hello', 'utf-8').digest('hex'))
-})
-
-assertSame(function md5 (crypto, cb) {
-  cb(null, crypto.createHash('md5').update('hello', 'utf-8').digest('hex'))
+assertSame(function sha256 (crypto, cb) {
+  cb(null, crypto.createHash('sha256').update('hello', 'utf-8').digest('hex'));
 })
 
 assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hello', 'utf-8').digest('hex'))
+  cb(null, crypto.createHash('sha256').update('hellø', 'utf-8').digest('hex'));
 })
 
-assertSame(function sha1hmac (crypto, cb) {
-  cb(null, crypto.createHmac('sha1', 'secret').update('hello', 'utf-8').digest('hex'))
+assertSame(function sha256 (crypto, cb) {
+  cb(null, crypto.createHash('sha256').update('hello', 'utf-8').digest().toString('hex'));
 })
 
-assertSame(function md5hmac (crypto, cb) {
-  cb(null, crypto.createHmac('md5', 'secret').update('hello', 'utf-8').digest('hex'))
+assertSame(function sha256 (crypto, cb) {
+  cb(null, crypto.createHash('sha256').update('hellø', 'utf-8').digest('binary'));
 })
 
 assertSame(function sha256hmac (crypto, cb) {

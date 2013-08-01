@@ -1,42 +1,20 @@
 var Buffer = require('buffer').Buffer
-var sha = require('./sha')
 var sha256 = require('./sha256')
 var rng = require('./rng')
-var md5 = require('./md5')
 
 var algorithms = {
-  sha1: {
-    hex: sha.hex_sha1,
-    binary: sha.b64_sha1,
-    ascii: sha.str_sha1
-  },
   sha256: {
-    hex: sha256.hex_sha256,
-    binary: sha256.b64_sha256,
-    ascii: sha256.str_sha256
-  },
-  md5: {
-    hex: md5.hex_md5,
-    binary: md5.b64_md5,
-    ascii: md5.any_md5
+    hex: sha256.hex,
+    binary: sha256.binary,
+    buffer: sha256.buffer
   }
 }
 
 var algorithmsHmac = {
-  sha1: {
-    hex: sha.hex_hmac_sha1,
-    binary: sha.b64_hmac_sha1,
-    ascii: sha.str_hmac_sha1
-  },
   sha256: {
-    hex: sha256.hex_hmac_sha256,
-    binary: sha256.b64_hmac_sha256,
-    ascii: sha256.str_hmac_sha256
-  },
-  md5: {
-    hex: md5.hex_hmac_md5,
-    binary: md5.b64_hmac_md5,
-    ascii: md5.any_hmac_md5
+    hex: sha256.hmac_hex,
+    binary: sha256.hmac_binary,
+    buffer: sha256.hmac_buffer
   }
 }
 
@@ -62,7 +40,7 @@ exports.createHash = function (alg) {
       return this
     },
     digest: function (enc) {
-      enc = enc || 'binary'
+      enc = enc || 'buffer'
       var fn
       if(!(fn = _alg[enc]))
         error('encoding:', enc , 'is not yet supported for algorithm', alg)
@@ -86,7 +64,7 @@ exports.createHmac = function (alg, key) {
       return this
     },
     digest: function (enc) {
-      enc = enc || 'binary'
+      enc = enc || 'buffer'
       var fn
       if (!(fn = _alg[enc]))
         error('encoding:', enc, 'is not yet support for algorithm', alg)
