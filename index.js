@@ -37,11 +37,14 @@ exports.createHash = function (alg) {
   var _alg = algorithms[alg];
   return {
     update: function (data, enc) {
-      enc = enc || 'buffer';
-      if (enc === 'buffer' && typeof data === 'string') {
-        enc = 'binary';
+      if (! Buffer.isBuffer(data)) {
+        enc = enc || 'buffer';
+        if (enc === 'buffer' && typeof data === 'string') {
+          enc = 'binary';
+        }
+        data = new Buffer(data, enc);
       }
-      s = Buffer.concat([s, new Buffer(data, enc)]);
+      s = Buffer.concat([s, data]);
       return this;
     },
     digest: function (enc) {
@@ -50,7 +53,7 @@ exports.createHash = function (alg) {
       if(!(fn = _alg[enc])) {
         error('encoding:', enc , 'is not yet supported for algorithm', alg);
       }
-      var r = fn(s.toString());
+      var r = fn(s);
       s = null //not meant to use the hash after you've called digest.
       return r
     }
@@ -82,7 +85,7 @@ exports.createHmac = function (alg, key) {
       if (!(fn = _alg[enc])) {
         error('encoding:', enc, 'is not yet support for algorithm', alg);
       }
-      var r = fn(key, s.toString());
+      var r = fn(key, s);
       s = null;
       return r;
     }

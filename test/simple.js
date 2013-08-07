@@ -17,11 +17,19 @@ function assertSame (fn) {
 }
 
 assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hello').digest('hex'));
+  cb(null, crypto.createHash('sha256').update('hello').update('there').digest('hex'));
 })
 
 assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update(new Buffer('dead', 'hex')).digest('hex'));
+  cb(null, crypto.createHash('sha256').update(new Buffer('cafe', 'hex')).digest('hex'));
+})
+
+assertSame(function sha256 (crypto, cb) {
+  cb(null, crypto.createHash('sha256').update(Buffer.concat([Buffer('dead', 'hex'), Buffer('beef', 'hex')])).digest('hex'));
+})
+
+assertSame(function sha256 (crypto, cb) {
+  cb(null, crypto.createHash('sha256').update(new Buffer('dead', 'hex')).update(new Buffer('beef', 'hex')).digest('hex'));
 })
 
 assertSame(function sha256 (crypto, cb) {
