@@ -4,9 +4,11 @@ var Buffer = require('buffer').Buffer;
 var bits2hex = sjcl.codec.hex.fromBits;
 var bits2bytes = sjcl.codec.bytes.fromBits;
 
-var Hash = sjcl.hash.sha256;
 var str2bits = sjcl.codec.utf8String.toBits;
 var hex2bits = sjcl.codec.hex.toBits;
+var bytes2bits = sjcl.codec.bytes.toBits;
+
+var Hash = sjcl.hash.sha256;
 
 function bits2str (arr) {
   var out = "", bl = sjcl.bitArray.bitLength(arr), i, tmp;
@@ -22,18 +24,18 @@ function bits2str (arr) {
 
 
 function hmac(key, data) {
-  data = hex2bits(data.toString('hex'));
+  data = bytes2bits(data);
   var m = new sjcl.misc.hmac(str2bits(key), Hash);
   return m.mac(data);
 }
 
 function hex(data) {
-  data = hex2bits(data.toString('hex'));
+  data = bytes2bits(data);
   return bits2hex(Hash.hash(data));
 }
 
 function buffer(data) {
-  data = hex2bits(data.toString('hex'));
+  data = bytes2bits(data);
   return new Buffer(bits2bytes(Hash.hash(data)));
 }
 
@@ -42,7 +44,7 @@ function hmac_hex(key, data) {
 }
 
 function binary(data) {
-  data = hex2bits(data.toString('hex'));
+  data = bytes2bits(data);
   return bits2str(Hash.hash(data));
 }
 
