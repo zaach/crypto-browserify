@@ -38,7 +38,7 @@ function hmac_hex(key, data) {
 }
 
 function binary(data) {
-  return fromBits(Hash.hash(data));
+  return bits2str(Hash.hash(data));
 }
 
 exports.hex = hex;

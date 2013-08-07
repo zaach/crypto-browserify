@@ -30,21 +30,27 @@ function error () {
 
 exports.createHash = function (alg) {
   alg = alg || 'sha1'
-  if(!algorithms[alg])
+  if(!algorithms[alg]) {
     error('algorithm:', alg, 'is not yet supported')
-  var s = ''
-  var _alg = algorithms[alg]
+  }
+  var s = new Buffer(0);
+  var _alg = algorithms[alg];
   return {
-    update: function (data) {
-      s += data
-      return this
+    update: function (data, enc) {
+      enc = enc || 'buffer';
+      if (enc === 'buffer' && typeof data === 'string') {
+        enc = 'binary';
+      }
+      s = Buffer.concat([s, new Buffer(data, enc)]);
+      return this;
     },
     digest: function (enc) {
-      enc = enc || 'buffer'
-      var fn
-      if(!(fn = _alg[enc]))
-        error('encoding:', enc , 'is not yet supported for algorithm', alg)
-      var r = fn(s)
+      enc = enc || 'buffer';
+      var fn;
+      if(!(fn = _alg[enc])) {
+        error('encoding:', enc , 'is not yet supported for algorithm', alg);
+      }
+      var r = fn(s.toString());
       s = null //not meant to use the hash after you've called digest.
       return r
     }
@@ -52,25 +58,33 @@ exports.createHash = function (alg) {
 }
 
 exports.createHmac = function (alg, key) {
-  if (!algorithmsHmac[alg])
+  if (!algorithmsHmac[alg]) {
     error('algorithm:', alg, 'is not yet supported')
-  if (typeof key != 'string')
+  }
+  if (typeof key != 'string') {
     key = key.toString('binary')
-  var s = ''
-  var _alg = algorithmsHmac[alg]
+  }
+  var s = new Buffer(0);
+  var _alg = algorithmsHmac[alg];
+
   return {
-    update: function (data) {
-      s += data
-      return this
+    update: function (data, enc) {
+      enc = enc || 'buffer';
+      if (enc === 'buffer' && typeof data === 'string') {
+        enc = 'binary';
+      }
+      s = Buffer.concat([s, new Buffer(data, enc)]);
+      return this;
     },
     digest: function (enc) {
-      enc = enc || 'buffer'
-      var fn
-      if (!(fn = _alg[enc]))
-        error('encoding:', enc, 'is not yet support for algorithm', alg)
-      var r = fn(key, s)
-      s = null
-      return r
+      enc = enc || 'buffer';
+      var fn;
+      if (!(fn = _alg[enc])) {
+        error('encoding:', enc, 'is not yet support for algorithm', alg);
+      }
+      var r = fn(key, s.toString());
+      s = null;
+      return r;
     }
   }
 }

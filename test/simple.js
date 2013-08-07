@@ -1,4 +1,5 @@
 var test = require("tape")
+var Buffer = require("buffer").Buffer;
 
 var crypto = require('crypto')
 var cryptoB = require('../')
@@ -16,23 +17,27 @@ function assertSame (fn) {
 }
 
 assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hello', 'utf-8').digest('hex'));
+  cb(null, crypto.createHash('sha256').update('hello').digest('hex'));
 })
 
 assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hellø', 'utf-8').digest('hex'));
+  cb(null, crypto.createHash('sha256').update(new Buffer('dead', 'hex')).digest('hex'));
 })
 
 assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hello', 'utf-8').digest().toString('hex'));
+  cb(null, crypto.createHash('sha256').update('hellø', 'utf8').digest('hex'));
 })
 
 assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hellø', 'utf-8').digest('binary'));
+  cb(null, crypto.createHash('sha256').update('hello', 'utf8').digest().toString('hex'));
+})
+
+assertSame(function sha256 (crypto, cb) {
+  cb(null, crypto.createHash('sha256').update('hellø', 'utf8').digest('binary'));
 })
 
 assertSame(function sha256hmac (crypto, cb) {
-  cb(null, crypto.createHmac('sha256', 'secret').update('hello', 'utf-8').digest('hex'))
+  cb(null, crypto.createHmac('sha256', 'secret').update('hello', 'utf8').digest('hex'))
 })
 
 test('randomBytes', function (t) {
