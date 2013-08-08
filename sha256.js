@@ -25,7 +25,8 @@ function bits2str (arr) {
 
 function hmac(key, data) {
   data = bytes2bits(data);
-  var m = new sjcl.misc.hmac(str2bits(key), Hash);
+  key = typeof key === 'string' ? str2bits(key) : bytes2bits(key);
+  var m = new sjcl.misc.hmac(key, Hash);
   return m.mac(data);
 }
 

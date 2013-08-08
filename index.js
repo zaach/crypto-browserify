@@ -64,19 +64,19 @@ exports.createHmac = function (alg, key) {
   if (!algorithmsHmac[alg]) {
     error('algorithm:', alg, 'is not yet supported')
   }
-  if (typeof key != 'string') {
-    key = key.toString('binary')
-  }
   var s = new Buffer(0);
   var _alg = algorithmsHmac[alg];
 
   return {
     update: function (data, enc) {
-      enc = enc || 'buffer';
-      if (enc === 'buffer' && typeof data === 'string') {
-        enc = 'binary';
+      if (! Buffer.isBuffer(data)) {
+        enc = enc || 'buffer';
+        if (enc === 'buffer' && typeof data === 'string') {
+          enc = 'binary';
+        }
+        data = new Buffer(data, enc);
       }
-      s = Buffer.concat([s, new Buffer(data, enc)]);
+      s = Buffer.concat([s, data]);
       return this;
     },
     digest: function (enc) {
