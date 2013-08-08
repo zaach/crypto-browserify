@@ -2,10 +2,12 @@ var sjcl = require('./sjcl');
 var Buffer = require('buffer').Buffer;
 
 var bits2hex = sjcl.codec.hex.fromBits;
+var bits2base64 = sjcl.codec.base64.fromBits;
 var bits2bytes = sjcl.codec.bytes.fromBits;
 
 var str2bits = sjcl.codec.utf8String.toBits;
 var hex2bits = sjcl.codec.hex.toBits;
+var b642bits = sjcl.codec.base64.toBits;
 var bytes2bits = sjcl.codec.bytes.toBits;
 
 var Hash = sjcl.hash.sha256;
@@ -35,6 +37,11 @@ function hex(data) {
   return bits2hex(Hash.hash(data));
 }
 
+function base64(data) {
+  data = bytes2bits(data);
+  return bits2base64(Hash.hash(data));
+}
+
 function buffer(data) {
   data = bytes2bits(data);
   return new Buffer(bits2bytes(Hash.hash(data)));
@@ -42,6 +49,10 @@ function buffer(data) {
 
 function hmac_hex(key, data) {
   return bits2hex(hmac(key, data));
+}
+
+function hmac_base64(key, data) {
+  return bits2base64(hmac(key, data));
 }
 
 function hmac_buffer(key, data) {
@@ -59,9 +70,11 @@ function binary(data) {
 }
 
 exports.hex = hex;
+exports.base64 = base64;
 exports.buffer = buffer;
 exports.binary = binary;
 
 exports.hmac_hex = hmac_hex;
+exports.hmac_base64 = hmac_base64;
 exports.hmac_buffer = hmac_buffer;
 exports.hmac_binary = hmac_binary;

@@ -5,6 +5,7 @@ var rng = require('./rng')
 var algorithms = {
   sha256: {
     hex: sha256.hex,
+    base64: sha256.base64,
     binary: sha256.binary,
     buffer: sha256.buffer
   }
@@ -13,6 +14,7 @@ var algorithms = {
 var algorithmsHmac = {
   sha256: {
     hex: sha256.hmac_hex,
+    base64: sha256.hmac_base64,
     binary: sha256.hmac_binary,
     buffer: sha256.hmac_buffer
   }

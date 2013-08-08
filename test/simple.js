@@ -16,46 +16,48 @@ function assertSame (fn) {
   })
 }
 
-assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hello').update('there').digest('hex'));
-})
+['hex', 'base64']
+.map(function (enc) {
+  assertSame(function sha256 (crypto, cb) {
+    cb(null, crypto.createHash('sha256').update('hello').update('there').digest(enc));
+  })
 
-assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update(new Buffer('cafe', 'hex')).digest('hex'));
-})
+  assertSame(function sha256 (crypto, cb) {
+    cb(null, crypto.createHash('sha256').update(new Buffer('cafe', 'hex')).digest(enc));
+  })
 
-assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update(Buffer.concat([Buffer('dead', 'hex'), Buffer('beef', 'hex')])).digest('hex'));
-})
+  assertSame(function sha256 (crypto, cb) {
+    cb(null, crypto.createHash('sha256').update(Buffer.concat([Buffer('dead', 'hex'), Buffer('beef', 'hex')])).digest(enc));
+  })
 
-assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update(new Buffer('dead', 'hex')).update(new Buffer('beef', 'hex')).digest('hex'));
-})
+  assertSame(function sha256 (crypto, cb) {
+    cb(null, crypto.createHash('sha256').update(new Buffer('dead', 'hex')).update(new Buffer('beef', 'hex')).digest(enc));
+  })
 
-assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hellø', 'utf8').digest('hex'));
-})
+  assertSame(function sha256 (crypto, cb) {
+    cb(null, crypto.createHash('sha256').update('hellø', 'utf8').digest(enc));
+  })
 
-assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hello', 'utf8').digest().toString('hex'));
-})
+  assertSame(function sha256 (crypto, cb) {
+    cb(null, crypto.createHash('sha256').update('hello', 'utf8').digest().toString(enc));
+  })
 
-assertSame(function sha256 (crypto, cb) {
-  cb(null, crypto.createHash('sha256').update('hellø', 'utf8').digest('binary'));
-})
+  assertSame(function sha256 (crypto, cb) {
+    cb(null, crypto.createHash('sha256').update('hellø', 'utf8').digest('binary'));
+  })
 
-assertSame(function sha256hmac (crypto, cb) {
-  cb(null, crypto.createHmac('sha256', 'secret').update('hello').digest('hex'))
-})
+  assertSame(function sha256hmac (crypto, cb) {
+    cb(null, crypto.createHmac('sha256', 'secret').update('hello').digest(enc))
+  })
 
+  assertSame(function sha256hmac (crypto, cb) {
+    cb(null, crypto.createHmac('sha256', Buffer('beef', 'hex')).update('hello').digest(enc))
+  })
 
-assertSame(function sha256hmac (crypto, cb) {
-  cb(null, crypto.createHmac('sha256', Buffer('beef', 'hex')).update('hello').digest('hex'))
-})
-
-assertSame(function sha256hmac (crypto, cb) {
-  cb(null, crypto.createHmac('sha256', 'secret').update('hello', 'utf8').digest().toString('hex'))
-})
+  assertSame(function sha256hmac (crypto, cb) {
+    cb(null, crypto.createHmac('sha256', 'secret').update('hello', 'utf8').digest().toString(enc))
+  })
+});
 
 test('randomBytes', function (t) {
   t.plan(5)
