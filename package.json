@@ -14,9 +14,9 @@
   "engines": {
     "node": "*"
   },
-  "dependencies": {},
+  "dependencies": { },
   "devDependencies": {
-    "tape": "~0.1.5"
+    "tape": "~1.0.4"
   },
   "testling": {
     "files": "test/*.js",
