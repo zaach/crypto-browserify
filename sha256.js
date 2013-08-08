@@ -43,6 +43,15 @@ function hmac_hex(key, data) {
   return bits2hex(hmac(key, data));
 }
 
+function hmac_buffer(key, data) {
+  return new Buffer(bits2bytes(hmac(key, data)));
+}
+
+function hmac_binary(key, data) {
+  data = bytes2bits(data);
+  return bits2str(hmac(key, data));
+}
+
 function binary(data) {
   data = bytes2bits(data);
   return bits2str(Hash.hash(data));
@@ -53,3 +62,5 @@ exports.buffer = buffer;
 exports.binary = binary;
 
 exports.hmac_hex = hmac_hex;
+exports.hmac_buffer = hmac_buffer;
+exports.hmac_binary = hmac_binary;

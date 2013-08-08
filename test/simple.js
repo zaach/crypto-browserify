@@ -45,7 +45,11 @@ assertSame(function sha256 (crypto, cb) {
 })
 
 assertSame(function sha256hmac (crypto, cb) {
-  cb(null, crypto.createHmac('sha256', 'secret').update('hello', 'utf8').digest('hex'))
+  cb(null, crypto.createHmac('sha256', 'secret').update('hello').digest('hex'))
+})
+
+assertSame(function sha256hmac (crypto, cb) {
+  cb(null, crypto.createHmac('sha256', 'secret').update('hello', 'utf8').digest().toString('hex'))
 })
 
 test('randomBytes', function (t) {
