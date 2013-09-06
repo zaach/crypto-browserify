@@ -14,7 +14,10 @@
   "engines": {
     "node": "*"
   },
-  "dependencies": { },
+  "dependencies": {
+    "sjcl": "git://github.com/bitwiseshiftleft/sjcl.git#961316282a",
+    "sjcl-codec-bytes": "git://github.com/zaach/sjcl-codec-bytes.git#0ddc7744"
+  },
   "devDependencies": {
     "tape": "~1.0.4"
   },

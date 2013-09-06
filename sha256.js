@@ -1,14 +1,15 @@
-var sjcl = require('./sjcl');
+var sjcl = require('sjcl');
+var bytes = require('sjcl-codec-bytes');
 var Buffer = require('buffer').Buffer;
 
 var bits2hex = sjcl.codec.hex.fromBits;
 var bits2base64 = sjcl.codec.base64.fromBits;
-var bits2bytes = sjcl.codec.bytes.fromBits;
+var bits2bytes = bytes.fromBits;
 
 var str2bits = sjcl.codec.utf8String.toBits;
 var hex2bits = sjcl.codec.hex.toBits;
 var b642bits = sjcl.codec.base64.toBits;
-var bytes2bits = sjcl.codec.bytes.toBits;
+var bytes2bits = bytes.toBits;
 
 var Hash = sjcl.hash.sha256;
 
