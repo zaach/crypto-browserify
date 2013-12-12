@@ -19,7 +19,7 @@
   }
 
   if (_global.crypto && crypto.getRandomValues) {
-    var _rnds = new Uint32Array(4);
+    var _rnds = new Uint32Array(16);
     whatwgRNG = function(size) {
       var bytes = new Array(size);
       crypto.getRandomValues(_rnds);
